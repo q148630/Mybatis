@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="org.example.dao.IUserDao">
+<!--    配置查詢所有-->
+    <select id="findAll" resultType="org.example.domain.User">
+        SELECT * FROM user
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.IUserDao">
+
+    <!--    查詢所有-->
+    <select id="findAll" resultType="org.example.domain.User">
+        SELECT * FROM user;
+    </select>
+
+<!--    保存用戶-->
+    <insert id="saveUser" parameterType="org.example.domain.User">
+        <!--    配置插入操作後，取得插入數據的 id-->
+        <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
+            SELECT last_insert_id();
+        </selectKey>
+        INSERT INTO user(username, address, sex, birthday) VALUES (#{username}, #{address}, #{sex}, #{birthday});
+    </insert>
+
+<!--    更新用戶-->
+    <update id="updateUser" parameterType="org.example.domain.User">
+        UPDATE user SET username=#{username}, address=#{address}, sex=#{sex}, birthday=#{birthday} WHERE id=#{id};
+    </update>
+
+    <!--    刪除用戶-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        DELETE FROM user WHERE id=#{uid};
+    </delete>
+
+    <!--    根據 Id 查詢用戶-->
+    <select id="findById" parameterType="INT" resultType="org.example.domain.User">
+        SELECT * FROM user WHERE id=#{uid};
+    </select>
+
+    <!--    根據名稱模糊查詢-->
+    <select id="findByName" parameterType="string" resultType="org.example.domain.User">
+        SELECT * FROM user WHERE username LIKE #{name};
+        <!--    SELECT * FROM user WHERE username LIKE '%${value}%';-->
+    </select>
+
+    <!--    取得用戶的總紀錄條數-->
+    <select id="findTotal" resultType="int">
+        SELECT count(id) FROM user;
+    </select>
+
+</mapper>

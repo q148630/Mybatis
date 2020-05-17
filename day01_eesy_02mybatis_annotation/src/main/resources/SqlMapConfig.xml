@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis 的主配置文件-->
+<configuration>
+<!--    配置環境-->
+    <environments default="mysql">
+<!--        配置 mysql 的環境-->
+        <environment id="mysql">
+<!--            配置事務的類型-->
+            <transactionManager type="JDBC"></transactionManager>
+<!--            配置數據源 (連接池)-->
+            <dataSource type="POOLED">
+<!--            配置連接資料庫的 4 個基本信息-->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/eesy?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/>
+                <property name="username" value="admin"/>
+                <property name="password" value="admin8857810"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+<!--    指定映射配置文件的位置，映射配置文件指的是每個 Dao 獨立的配置文件
+        如果是用註解來配置的話，此處應該使用 class 屬性指定被註解的 Dao 全限定類名
+-->
+    <mappers>
+        <mapper class="org.example.dao.IUserDao"/>
+    </mappers>
+</configuration>

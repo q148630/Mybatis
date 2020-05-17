@@ -1,0 +1,38 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="jdbcConfig.properties"></properties>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+<!--    使用 typeAliases 配置別名，它只能配置 domain 中類的別名-->
+    <typeAliases>
+        <package name="org.example.domain"/>
+    </typeAliases>
+
+<!--    配置環境-->
+    <environments default="mysql">
+<!--        配置 mysql 的環境-->
+        <environment id="mysql">
+<!--            配置事務-->
+            <transactionManager type="JDBC"></transactionManager>
+<!--            配置連接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+<!--    配置映射文件的位置-->
+    <mappers>
+        <package name="org.example.dao"/>
+    </mappers>
+
+</configuration>

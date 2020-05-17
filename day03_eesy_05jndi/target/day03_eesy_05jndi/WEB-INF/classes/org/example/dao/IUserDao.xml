@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.IUserDao">
+
+<!--    配置查詢結果的欄位名和實體類的屬性名的對應關係-->
+    <resultMap id="userMap" type="uSeR">
+<!--        主鍵欄位的對應-->
+        <id property="userId" column="id"></id>
+<!--        非主鍵欄位的對應-->
+        <result property="userName" column="username"></result>
+        <result property="userAddress" column="address"></result>
+        <result property="userSex" column="sex"></result>
+        <result property="userBirthday" column="birthday"></result>
+    </resultMap>
+
+    <!--    查詢所有-->
+    <select id="findAll" resultMap="userMap">
+    <!--    SELECT id AS userId, username AS userName, address AS userAddress, sex AS userSex, birthday AS userBirthday FROM user;-->
+        SELECT * FROM user;
+    </select>
+
+<!--    保存用戶-->
+    <insert id="saveUser" parameterType="user">
+        <!--    配置插入操作後，取得插入數據的 id-->
+        <selectKey keyProperty="userId" keyColumn="id" resultType="int" order="AFTER">
+            SELECT last_insert_id();
+        </selectKey>
+        INSERT INTO user(username, address, sex, birthday) VALUES (#{userName}, #{userAddress}, #{userSex}, #{userBirthday});
+    </insert>
+
+<!--    更新用戶-->
+    <update id="updateUser" parameterType="USER">
+        UPDATE user SET username=#{userName}, address=#{userAddress}, sex=#{userSex}, birthday=#{userBirthday} WHERE id=#{userId};
+    </update>
+
+    <!--    刪除用戶-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        DELETE FROM user WHERE id=#{uid};
+    </delete>
+
+    <!--    根據 Id 查詢用戶-->
+    <select id="findById" parameterType="INT" resultMap="userMap">
+        SELECT * FROM user WHERE id=#{uid};
+    </select>
+
+    <!--    根據名稱模糊查詢-->
+    <select id="findByName" parameterType="string" resultMap="userMap">
+        SELECT * FROM user WHERE username LIKE #{name};
+        <!--    SELECT * FROM user WHERE username LIKE '%${value}%';-->
+    </select>
+
+    <!--    取得用戶的總紀錄條數-->
+    <select id="findTotal" resultType="int">
+        SELECT count(id) FROM user;
+    </select>
+
+<!--    根據 QueryVo 的條件查詢用戶-->
+    <select id="findUserByVo" parameterType="org.example.domain.QueryVo" resultMap="userMap">
+        SELECT * FROM user WHERE username LIKE #{user.userName};
+    </select>
+
+</mapper>

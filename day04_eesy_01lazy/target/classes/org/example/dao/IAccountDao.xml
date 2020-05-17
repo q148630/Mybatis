@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.IAccountDao">
+
+<!--    定義封裝 account 和 user 的 resultMap-->
+    <resultMap id="accountUserMap" type="account">
+        <id property="id" column="id"></id>
+        <result property="uid" column="uid"></result>
+        <result property="money" column="money"></result>
+
+        <!--        一對一的關係映射，配置封裝 user 的內容
+                select 屬性指定的內容: 查詢用戶的唯一標識:
+                column 屬性指定的內容: 用戶根據 id 查詢時，所需要的參數的值
+        -->
+        <association property="user" column="uid" javaType="user" select="org.example.dao.IUserDao.findById">
+
+        </association>
+    </resultMap>
+
+    <!--    查詢所有-->
+    <select id="findAll" resultMap="accountUserMap">
+        SELECT * FROM account
+    </select>
+
+    <!--    根據用戶 id 查詢帳戶列表-->
+    <select id="findAccountByUid" resultType="account">
+        SELECT * FROM account WHERE uid=#{uid}
+    </select>
+
+</mapper>
